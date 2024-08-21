@@ -1,0 +1,91 @@
+[gd_scene load_steps=15 format=3 uid="uid://db2h3t17k37pe"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_1d73w"]
+[ext_resource type="Texture2D" uid="uid://dxhmood0fkku1" path="res://icon.svg" id="1_s66bi"]
+[ext_resource type="PackedScene" uid="uid://csahyc6i0or1b" path="res://assets/fun man.glb" id="3_j8tqr"]
+[ext_resource type="PackedScene" uid="uid://cd4nu3dqy1md1" path="res://Scenes/amr_game_bomb.tscn" id="5_0tj5i"]
+[ext_resource type="PackedScene" uid="uid://dmyd2pkopoyn3" path="res://assets/why.glb" id="5_uvfvr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3aljy"]
+albedo_texture = ExtResource("1_s66bi")
+uv1_scale = Vector3(10000, 10000, 10000)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4jfsn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oot08"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_cag7h"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5lq0h"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_f6bkd"]
+sky_material = SubResource("ProceduralSkyMaterial_5lq0h")
+
+[sub_resource type="Environment" id="Environment_g2h84"]
+background_mode = 2
+sky = SubResource("Sky_f6bkd")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xc2g5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wydro"]
+
+[node name="World" type="Node3D"]
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Box" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(3006.61, 0, 0, 0, 3006.61, 0, 0, 0, 3006.61, 0, 1.90735e-06, 0)
+material_override = SubResource("StandardMaterial3D_3aljy")
+mesh = SubResource("PlaneMesh_4jfsn")
+surface_material_override/0 = SubResource("StandardMaterial3D_oot08")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Box"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Box/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_cag7h")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
+environment = SubResource("Environment_g2h84")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Map"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.15249, 0, 0)
+script = ExtResource("1_1d73w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_xc2g5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_wydro")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.67939, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player/Head"]
+
+[node name="House" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.7479, 0, 0)
+
+[node name="fun man" parent="." instance=ExtResource("3_j8tqr")]
+transform = Transform3D(0.0368346, 0, 0, 0, 0.0368346, 0, 0, 0, 0.0368346, 0.202484, 0.954762, 4.93081)
+
+[node name="fun man2" parent="." instance=ExtResource("3_j8tqr")]
+transform = Transform3D(0.0368346, 0, 0, 0, 0.0368346, 0, 0, 0, 0.0368346, -9.89447, 0.954762, 4.93081)
+
+[node name="bara" type="Node3D" parent="."]
+
+[node name="why" parent="bara" instance=ExtResource("5_uvfvr")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -36, -0.697418, 0)
+
+[node name="amr game Bomb" parent="bara" instance=ExtResource("5_0tj5i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.24206, 0)
